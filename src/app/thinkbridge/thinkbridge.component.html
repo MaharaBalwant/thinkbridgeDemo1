@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <h3>Items Listing</h3>
+            <button type="submit" class="btn" (click)="addNewItem()">Add New Item</button>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Discription</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of itemList; let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data?.name}}</td>
+                        <td>{{data?.discription}}</td>
+                        <td><button class="btn btn-primary" (click)="editItemDetails(data.id)">edit</button>&nbsp;<button class="btn btn-primary" (click)="deleteItem(data.id)">delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModal" class="modal" *ngIf="modalFlag">
+    <!-- Modal content -->
+    <div class="modal-content" *ngIf="modalId!=3 else deleteModal">
+        <div class="modal-header">
+            <span class="close" (click)="closeForm()">&times;</span>
+            <h2>{{(modalId===1)?"Add New ":"Edit "}} Item Details</h2>
+        </div>
+        <div class="modal-body">
+            <form class="form-container" [formGroup]="itemForm">
+              <div>
+                <label><b>Name</b></label>
+                <input type="text" formControlName="name">
+                <span *ngIf="fieldValid('name')">Name is required</span>
+              </div>
+              <div>
+                <label><b>Discription</b></label>
+                <textarea maxlength="200" formControlName="discription"></textarea>
+                <span *ngIf="fieldValid('discription')">Discription is required</span>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn" (click)="saveFormData()">{{(modalId===1)?"Save":"Update"}}</button>
+            <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
+        </div>
+    </div>
+    <ng-template #deleteModal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" (click)="closeForm()">&times;</span>
+            <h2>Delete Item</h2>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure: you want to delete item : <b>{{modalData.name}}</b></p>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn" (click)="deleteItemData(modalData.id)">Delete</button>
+            <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
+        </div>
+    </div>
+    </ng-template>
+</div>
